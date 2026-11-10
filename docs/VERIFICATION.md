@@ -49,4 +49,8 @@ uv run python -m aegis_relay_core.snapshot
 
 On this macOS host, Vite's bundled config loader stalled, so local compilation and component checks used `pnpm exec vite build --configLoader runner` and `pnpm exec vitest run --configLoader runner` from `apps/console`. The standard commands remain in CI. Browser tests use the built workspace and a local HTTP server. Fonts are bundled, including their SIL Open Font Licenses, so font-CDN availability does not affect page loading.
 
-The private repository does not currently imply a hosted site. Deployment is manual; see [Deployment](DEPLOYMENT.md).
+## Screenshot and documentation revision
+
+The investigation detail panels now participate directly in their responsive grid, making the finding, composed path, and signals visible side by side on wide screens. This changes presentation only. Console formatting, lint, TypeScript, all 23 component tests, and all 15 browser journeys passed again. The production console and assembled site built successfully using the local runner loader described above.
+
+Two new screenshots show the completed support investigation and an actual 12-agent Swarm Lab result. All README local links resolve, and all six native Mermaid diagrams were parsed and rendered with Mermaid. The root Vercel configuration builds the same static artifact; see [Deployment](DEPLOYMENT.md).

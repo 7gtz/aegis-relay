@@ -43,7 +43,7 @@ This distinction matters in the support case. The route is customer records → 
 
 ## Implemented rules
 
-**PS-001** requires the structural conditions for restricted data to reach external egress through undeclared shared state, with a composition across actors. Removing a necessary condition makes the rule go silent.
+**PS-001** requires the structural conditions for restricted data to reach external egress through undeclared shared state. Distinct depositing and withdrawing actors contribute a weighted factor; this distinction is not a mandatory gate. Removing a necessary path condition makes the rule go silent.
 
 **PS-002** examines one actor executing content authored by another through undeclared shared state. It is gated on architecture deviation: a declared planner-to-builder review channel does not become a finding simply because it crosses actors.
 

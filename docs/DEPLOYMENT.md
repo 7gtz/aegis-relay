@@ -1,8 +1,8 @@
-# Building and serving
+# Build and publish the demonstration
 
-The release is a static overview plus the compiled React workspace. The workspace includes recorded engine output, so it can operate without a backend. Start the local core separately when live analysis is required.
+The release contains a static field guide and a compiled investigation workspace. Recorded engine output is bundled, so the demonstration works without a Python service. The source repository can remain private while the static demo is public.
 
-## Build
+## Build locally
 
 ```bash
 pnpm install --frozen-lockfile
@@ -10,18 +10,37 @@ pnpm build
 python3 -m http.server 8080 --bind 127.0.0.1 --directory dist
 ```
 
-Visit <http://127.0.0.1:8080> for the field guide and <http://127.0.0.1:8080/console/> for the workspace. The build script copies `apps/site` to `dist` and the compiled console to `dist/console`.
+Open <http://127.0.0.1:8080/> for the field guide and <http://127.0.0.1:8080/console/> for the workspace. `scripts/build-site.mjs` copies `apps/site` into `dist` and the compiled console into `dist/console`.
 
-Relative asset paths support a project subpath. Always serve over HTTP; browser module and fetch rules make opening files directly an unreliable way to run the workspace.
+Relative assets support a project subpath. Serve over HTTP: opening the HTML as a file interferes with module and fetch rules.
+
+## Vercel
+
+Import `7gtz/aegis-relay` as a project from the repository root. Use these settings:
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | Other |
+| Root directory | Repository root |
+| Node.js | 22.x |
+| Install command | `corepack enable && corepack pnpm install --frozen-lockfile` |
+| Build command | `corepack pnpm run build` |
+| Output directory | `dist` |
+
+The committed [`vercel.json`](../vercel.json) supplies the install, build, and output settings. Corepack reads `packageManager` from `package.json`, selecting the pinned pnpm release. Set `ENABLE_EXPERIMENTAL_COREPACK=1` in the Vercel project environment when enabling Vercel's Corepack support. Do not add backend credentials for the recorded demonstration.
+
+A production deployment serves the field guide at `/` and console at `/console/`. No catch-all rewrite is needed: this console uses anchored sections rather than client-side path routes. Preview deployment access follows the project's Vercel protection settings; verify the production link in a signed-out browser before sharing it as a demo.
+
+After deployment, check both pages, local fonts and artwork, and the workspace source badge. Run a case to the end, apply its recommended simulated control, and confirm both verification outcomes. Run one supported lab experiment. A successful HTML response alone does not establish that the recorded assets loaded.
 
 ## Optional GitHub Pages
 
-The `Deploy site` workflow is manually triggered. Configure Pages to use GitHub Actions before running it. A private repository may require an account plan that supports Pages; no site is implied by the repository URL.
+The `Deploy site` workflow is manually triggered. Configure Pages to use GitHub Actions before running it. Private-repository Pages availability depends on the account plan. The same `dist` artifact is suitable for static hosting elsewhere.
 
-The configured metadata URLs use `https://7gtz.github.io/aegis-relay/`. Update canonical, social-preview, and package homepage metadata if you choose another host.
+When changing hosts, update canonical and social-preview URLs in `apps/site/index.html` and `apps/console/index.html`, plus package homepage metadata. These URLs describe the deployment; they do not select the API transport.
 
-## Live engine connection
+## Connecting a live service
 
-Set `VITE_AEGIS_RELAY_API_BASE` before building if the workspace should use a different API address. Configure the service's allowed origins explicitly. A failed local-service connection causes the existing recorded fallback; the source badge makes this visible.
+`VITE_AEGIS_RELAY_API_BASE` is read at build time. Set it before building if the workspace should reach a separately hosted API. Configure `AEGIS_RELAY_CORS_ORIGINS` on that service to permit the exact frontend origin. A failed connection selects the existing recorded fallback, identified by the source badge.
 
-This repository demonstrates simulated adapters and fictional environments. It does not include a production control integration or an authentication system for a remotely exposed analysis service.
+This Vercel configuration publishes static assets only. It does not host the Python engine, persist cases, or provide authentication for a remotely exposed analysis service. The demonstrated adapters and environments remain simulated and fictional.

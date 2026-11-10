@@ -55,3 +55,6 @@ docs/internal/
 .playwright-mcp/
 test-results/
 apps/console/test-results/
+
+# Local Vercel project link
+.vercel/

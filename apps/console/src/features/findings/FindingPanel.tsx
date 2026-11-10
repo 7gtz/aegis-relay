@@ -333,7 +333,7 @@ export function FindingPanel() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <>
       <Panel
         title={`${finding.rule_id} · finding`}
         tone="alert"
@@ -367,6 +367,6 @@ export function FindingPanel() {
       <Panel title="Signals" aside={<span className="label">{finding.manifest_version}</span>}>
         <RiskFactors factors={finding.risk_factors} score={finding.emergence_score} />
       </Panel>
-    </div>
+    </>
   );
 }
