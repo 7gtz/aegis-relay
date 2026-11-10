@@ -1,63 +1,27 @@
-# Aegis Relay core
+# Analysis core
 
-The security analysis engine. Python 3.12, FastAPI, NetworkX, Pydantic v2.
+This Python service owns the security conclusions displayed in the Aegis Relay workspace. It validates observations, reconstructs graphs, evaluates PS-001 and PS-002, compares registered controls, and verifies simulated responses.
 
-Nothing here calls a model, reaches the network, or touches a real system.
-Detection, planning and verification are deterministic code over checked-in
-fictional fixtures.
-
-## Run it
+## Start locally
 
 ```bash
-uv sync --group dev
-uv run uvicorn aegis_relay_core.main:app --port 8000
+uv sync --group dev --locked
+uv run uvicorn aegis_relay_core.main:app --host 127.0.0.1 --port 8000
 ```
 
-`http://127.0.0.1:8000/docs` is the generated API reference.
+The generated API reference is at <http://127.0.0.1:8000/docs>. Fixtures are fictional; the service does not call a model or contact the systems named by those fixtures.
 
-## Check it
+## Check and regenerate
 
 ```bash
 uv run ruff format --check src tests
 uv run ruff check src tests
-uv run mypy                       # strict over the product code
-uv run pytest -q                  # 193 tests
+uv run mypy
+uv run pytest -q
+uv run python -m aegis_relay_core.contract
+uv run python -m aegis_relay_core.snapshot
 ```
 
-## Regenerate what is derived
+The suite has 195 tests covering unit guarantees, HTTP integration, generated contracts, and property-based invariants. CI checks generated artifacts for drift.
 
-```bash
-uv run python -m aegis_relay_core.contract   # contracts/openapi/aegis-relay-core-v1.json
-uv run python -m aegis_relay_core.snapshot   # the console's recorded demo
-```
-
-Both are checked in, and CI fails if either has drifted from the code.
-
-## Module map
-
-Dependencies point inward. `domain/` imports nothing from the web, graph,
-persistence or connector layers; everything else depends on it.
-
-| Module | Owns |
-| --- | --- |
-| `domain/` | The typed security vocabulary and nothing else |
-| `ingest/` | Validation, redaction and provenance — the trust boundary |
-| `ledger/` | The append-only evidence log and its replay cursor |
-| `graph/` | The MultiDiGraph projection, keyed by action, plus the data-flow orientation |
-| `detection/` | PS-001, PS-002, and the shared weighted scoring |
-| `containment/` | Counterfactual planning, and the single definition of what a control does |
-| `policy/` | Manifest loading, validation, and invariant witnesses |
-| `connectors/` | The simulated control point |
-| `immunity/` | The reviewed pattern lifecycle |
-| `lab/` | Scenario loading and synthetic population experiments |
-| `application/` | Orchestration — the only layer that knows the order of operations |
-| `api/` | Transport. No security decision is made here |
-
-## Tests
-
-| Path | Covers |
-| --- | --- |
-| `tests/unit/` | Each module's own guarantees, including the necessary-condition tests that make a rule go silent when any precondition is removed |
-| `tests/integration/` | The operator journey over real HTTP |
-| `tests/property/` | Invariants over arbitrary generated event streams |
-| `tests/contract/` | The committed OpenAPI document and the shipped examples |
+Read [Architecture](../../docs/ARCHITECTURE.md) for module ownership, graph direction, planning, and verification. The [operator guide](../../docs/OPERATOR_GUIDE.md) explains how the console presents these results.

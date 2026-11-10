@@ -2,7 +2,7 @@
   "name": "aegis-relay-platform",
   "version": "0.0.0",
   "private": true,
-  "description": "Aegis Relay: detects risky capabilities that emerge between individually legitimate AI agents, and contains them with the smallest pre-authorised action that preserves declared work.",
+  "description": "Aegis Relay: trace agent interactions, inspect composed capabilities, and verify constrained responses.",
   "packageManager": "pnpm@11.19.0",
   "engines": {
     "node": ">=22.16.0 <23",

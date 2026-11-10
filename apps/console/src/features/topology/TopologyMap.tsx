@@ -17,7 +17,7 @@ import { useConsole } from '../../shared/state/store';
 import { buildLayout, groupParallel, routeEdge, toneFor, type EdgeTone } from './layout';
 
 const TONE: Record<EdgeTone, { stroke: string; width: number; dash?: string }> = {
-  declared: { stroke: '#3c444b', width: 1.1 },
+  declared: { stroke: '#78917b', width: 1.1 },
   undeclared: { stroke: '#f2c46b', width: 1.3, dash: '5 5' },
   incident: { stroke: '#f4543c', width: 2.1 },
 };
@@ -32,9 +32,9 @@ function nodeAccent(
 ): string {
   if (incident) return '#f4543c';
   if (registration === 'unregistered' || registration === 'unknown') return '#f2c46b';
-  if (trust === 'external') return '#9ba1a7';
+  if (trust === 'external') return '#a5b7a6';
   if (classification === 'restricted') return '#b79cf0';
-  return '#86b7ff';
+  return '#b8d8a8';
 }
 
 /** The one caption a node earns, or nothing. */
@@ -49,7 +49,7 @@ function flagFor(node: { registration: string; data_classification: string; trus
 /** Agents are circles, stores and sources are diamonds, destinations squares. */
 function Glyph({ kind, accent, severed }: { kind: string; accent: string; severed: boolean }) {
   const common = {
-    fill: '#0d1628',
+    fill: '#17271f',
     stroke: accent,
     strokeWidth: 1.2,
     opacity: severed ? 0.4 : 1,
@@ -139,7 +139,7 @@ export function TopologyMap() {
             markerHeight="5"
             orient="auto-start-reverse"
           >
-            <path d="M0 0 L8 4 L0 8 z" fill="#3c444b" />
+            <path d="M0 0 L8 4 L0 8 z" fill="#78917b" />
           </marker>
           <marker
             id="arrow-undeclared"
@@ -333,7 +333,7 @@ export function TopologyLegend() {
   const items: { label: string; swatch: React.ReactNode }[] = [
     {
       label: 'Declared relationship',
-      swatch: <span className="block h-px w-6 bg-[#3c444b]" />,
+      swatch: <span className="block h-px w-6 bg-[#78917b]" />,
     },
     {
       label: 'Not in the manifest',

@@ -1,20 +1,14 @@
-# Fixtures
+# Declared environments and replay evidence
 
-Deterministic, fictional material. No customer data, no real secrets, no live
-endpoints, no copied production logs.
+These inputs are synthetic and deterministic. They contain no production logs, working credentials, or live test endpoints.
 
-| Path | What it is |
+| File | Role |
 | --- | --- |
-| `manifests/default.yaml` | The support estate: zones, nodes, permitted relationships, invariants, and the controls an operator pre-authorised |
-| `manifests/delivery.yaml` | A second estate, sharing no node names with the first |
-| `scenarios/p0_scenario.jsonl` | 12 observations that compose a restricted-data-to-egress path (PS-001) |
-| `scenarios/p1_scenario.jsonl` | 12 observations that compose a cross-actor execution channel (PS-002) |
+| `manifests/default.yaml` | Support/reporting architecture, permitted relationships, invariants, and registered controls |
+| `manifests/delivery.yaml` | Independent software-delivery architecture with different actors and resources |
+| `scenarios/p0_scenario.jsonl` | Twelve observations that can form the PS-001 restricted-data route |
+| `scenarios/p1_scenario.jsonl` | Twelve observations that can form the PS-002 cross-actor execution channel |
 
-A manifest is the declaration of what a population is *meant* to do. Nothing in
-it is inferred from traffic, which is what makes a deviation meaningful rather
-than merely unusual.
+A manifest is an authored declaration of intended structure. It is not learned from traffic. Each JSON Lines observation crosses the same validation and redaction boundary used by the replay service. Duplicate event identifiers or sequence numbers are rejected.
 
-Scenarios are JSON Lines, one observation per line. Loading validates every line
-through the same ingest boundary a real collector would cross, and rejects
-repeated event ids or sequence numbers — both of which would make a replay
-quietly stop matching its own description.
+Changing these files changes the evidence or the declared design. Regenerate the recorded responses after an intentional edit and inspect the resulting findings and planner choices. See [Development](../docs/DEVELOPMENT.md).

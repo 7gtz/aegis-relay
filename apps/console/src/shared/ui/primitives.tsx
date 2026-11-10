@@ -26,7 +26,7 @@ export function Panel({
     tone === 'alert'
       ? 'border-l-[#f4543c]'
       : tone === 'resolved'
-        ? 'border-l-[#86b7ff]'
+        ? 'border-l-[#b8d8a8]'
         : 'border-l-rule';
   return (
     <section data-panel={title} className={`rule-box border-l-2 bg-surface ${edge}`}>

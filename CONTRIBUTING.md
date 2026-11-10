@@ -1,51 +1,19 @@
-# Contributing to Aegis Relay
+# Contributing
 
-Aegis Relay is a security-sensitive prototype. Every contribution must strengthen the ability to explain, reproduce, and safely contain a finding.
+Start with a small, reviewable change and the guide for its layer. [Getting started](docs/GETTING_STARTED.md) covers setup; [Development](docs/DEVELOPMENT.md) lists the working commands.
 
-## Before editing
+## Choose the boundary
 
-1. Read the README. It describes what the system actually claims and what it deliberately does not.
-2. Choose one bounded task. Do not combine a schema change, a detector change and a console redesign in one change.
-3. Check whether the change crosses a contract boundary in `contracts/`.
-4. Use fictional data and simulated controls only.
+- Interface and copy changes belong in the console or field guide. Keep engine results, source labels, uncertainty, and rejected controls legible.
+- Security-semantic changes belong in the core. Back each new guarantee with a test that would fail if the guarantee stopped holding.
+- Contract or fixture changes require regenerating the OpenAPI document and recorded responses and reviewing the resulting diff.
 
-## Dependency direction
+The console does not duplicate policy or risk logic. The domain does not import web, graph, connector, or UI frameworks. See [Architecture](docs/ARCHITECTURE.md) for ownership.
 
-```text
-console -> generated/API contracts -> core API/application -> domain
-core adapters -> application -> domain
-fixtures/tests -> public contracts/domain
-```
+## Prepare a contribution
 
-The domain must not import FastAPI, a graph library, a connector, or console code. The console must not re-implement policy or risk logic — it renders what the core concluded and never computes a security conclusion of its own.
+Use deterministic fictional data. Keep local credentials and runtime state out of Git. Explain why an added dependency is needed and how it affects local or offline operation.
 
-## Change rules
+Run the relevant quality gates in [Verification](docs/VERIFICATION.md). Check desktop and narrow layouts when changing the presentation, and keep keyboard focus visible. A changed label may require updating a browser assertion; preserve the behavioral assertion rather than weakening it.
 
-- Add or update a deterministic test before changing security semantics. If a change makes a claim, a test must fail when the claim stops being true.
-- Treat an event, manifest, finding, containment plan, or policy as a versioned contract.
-- Add dependencies only with a written purpose, licence check, and local/offline fallback assessment.
-- Never commit `.env` files, live endpoints, credentials, personal data, or real customer telemetry.
-- Keep the first working security path smaller than the full platform vision.
-
-## Quality gate
-
-```bash
-cd services/core && uv run ruff format --check src tests && uv run ruff check src tests && uv run mypy && uv run pytest -q
-cd apps/console  && pnpm run check && pnpm run build && pnpm run test:e2e
-```
-
-Regenerate the derived artifacts if you changed the service or the fixtures:
-
-```bash
-cd services/core && uv run python -m aegis_relay_core.contract && uv run python -m aegis_relay_core.snapshot
-```
-
-CI runs all of the above and fails on any drift in the generated files.
-
-## Review checklist
-
-- [ ] The change has one clear owner and purpose.
-- [ ] Safety claims are backed by an executable test or explicitly labelled future work.
-- [ ] The UI does not invent or reinterpret a security conclusion.
-- [ ] Error and empty states do not show a false "safe" or "contained" state.
-- [ ] Documentation and contracts match the code.
+In your change description, state the trigger, resulting behavior, relevant validation, and any limitations. Screenshots should show the running product and accurately identify simulated or recorded content.

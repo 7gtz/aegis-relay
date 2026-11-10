@@ -1,22 +1,21 @@
-# Security and responsible research
+# Scope and trust boundaries
 
-Aegis Relay is a defensive cybersecurity project. The repository must contain only fictional fixtures and simulated control adapters unless the owner explicitly establishes a separate, authorised testing boundary.
+Aegis Relay is a defensive demonstration over fictional environments. Its controls are simulated. No actor, endpoint, or store named in the fixtures is contacted.
 
-## In scope for the prototype
+## Supported conclusions
 
-- Local deterministic replays of fictional events.
-- Expected-versus-observed architecture analysis.
-- Evidence-linked findings and simulated containment.
-- Safe development, dependency, and secret-handling practices.
+The two implemented rules report structural capabilities and deviations from an authored architecture. A finding cites reported observations. It does not establish intent, inspect payloads, prove data movement, or classify an agent as malicious. A zero-finding state is not a claim that an environment has no other risks.
 
-## Out of scope
+Response planning is constrained to registered capabilities. Applying one must preserve the distinction between predicted and verified results. Reviewable patterns begin as drafts and require explicit promotion.
 
-- Scanning, exploitation, credential collection, malware, destructive actions, or any activity against a live target.
-- Production customer data, agent prompts, trace payloads, secrets, or personal information.
-- Claims that Aegis Relay detects intent, all threats, or any unobserved behaviour.
+## Material that belongs in this repository
+
+Use synthetic actors, events, destinations, and credentials. Keep ingest validation and redaction intact. Preserve source labels that distinguish conceptual illustrations, recorded sessions, and a running local engine.
+
+Do not commit production traces, personal or customer data, working secrets, unauthorised test targets, or adapters that act on real systems outside an explicitly established testing boundary. `.env` files, evidence databases, and local runtime state remain untracked.
 
 ## Reporting a concern
 
-Do not open a public issue with sensitive material. Contact the project owner privately with a concise description, affected repository revision, reproduction steps using fictional data where possible, and potential impact.
+For a concern that does not contain sensitive details, open an issue describing the affected component, reproducible steps using fictional data, and the expected boundary. Do not put credentials or private telemetry in an issue or a reproduction archive.
 
-Until a disclosure channel is formally published, do not test against systems you do not own or lack written permission to assess.
+For implementation context, see [Architecture](docs/ARCHITECTURE.md). For contributor responsibilities, see [Contributing](CONTRIBUTING.md).

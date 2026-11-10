@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Aegis Relay">
-  <rect width="32" height="32" rx="7" fill="#080e1c"/>
-  <path d="M16 4 27 8v8c0 6-6 10-11 13C11 26 5 22 5 16V8Z" fill="none" stroke="#86b7ff" stroke-width="1.8"/>
-  <path d="m10 20 6-10 6 10M10 20h12" fill="none" stroke="#86b7ff" stroke-width="1.6"/>
-  <g fill="#e8f1ff"><circle cx="16" cy="10" r="2"/><circle cx="10" cy="20" r="2"/><circle cx="22" cy="20" r="2"/></g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Aegis Relay"><rect width="48" height="48" rx="14" fill="#183d32"/><g fill="none" stroke="#eaf0df" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 33V18a6 6 0 0 1 6-6h14M36 15v15a6 6 0 0 1-6 6H16"/><path d="m17 30 14-12"/></g><circle cx="17" cy="30" r="3.5" fill="#e5b376"/><circle cx="31" cy="18" r="3.5" fill="#eaf0df"/></svg>

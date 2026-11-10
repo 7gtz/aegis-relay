@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Aegis Relay security console: zone-banded interaction map, deterministic replay, evidence-linked findings, and constrained containment.",
+  "description": "The Aegis Relay investigation workspace: replay, evidence, response comparison, and verification.",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
     "build": "tsc -b && vite build",

@@ -1,12 +1,4 @@
-/**
- * The console shell.
- *
- * Layout follows the order an operator actually works in: what am I looking at
- * and is it safe, where in time am I, what does the estate look like now, what
- * is wrong, and what should I do. The map gets the most space because it is the
- * argument; everything else supports it.
- */
-
+/** The operator workspace: presentation and navigation over engine-owned state. */
 import { useEffect } from 'react';
 
 import { ArchitecturePanel } from '../features/architecture/ArchitecturePanel';
@@ -34,182 +26,243 @@ function ScenarioPicker() {
   const scenarioId = useConsole((s) => s.scenarioId);
   const busy = useConsole((s) => s.busy);
   const select = useConsole((s) => s.selectScenario);
-
   if (scenarios.length < 2) return null;
-
   return (
-    <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label="Scenario">
-      {scenarios.map((scenario) => {
-        const active = scenario.id === scenarioId;
-        return (
-          <button
-            key={scenario.id}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            disabled={busy}
-            onClick={() => void select(scenario.id)}
-            title={scenario.summary}
-            className={`rounded-[2px] border px-3 py-1.5 text-left transition-colors disabled:opacity-50 ${
-              active ? 'border-ice/60 bg-ice/10' : 'border-rule hover:border-ink/25'
-            }`}
-          >
-            <span
-              className={`block font-mono text-[10px] tracking-[0.14em] uppercase ${
-                active ? 'text-ice' : 'text-muted-deep'
-              }`}
-            >
-              {scenario.rule_id}
-            </span>
-            <span className={`block text-[12.5px] ${active ? 'text-ink' : 'text-muted'}`}>
-              {scenario.name}
-            </span>
-          </button>
-        );
-      })}
+    <div className="case-picker" role="radiogroup" aria-label="Scenario">
+      {scenarios.map((scenario, index) => (
+        <button
+          key={scenario.id}
+          type="button"
+          role="radio"
+          aria-checked={scenario.id === scenarioId}
+          disabled={busy}
+          onClick={() => void select(scenario.id)}
+          title={scenario.summary}
+        >
+          <span className="case-index">
+            CASE 0{index + 1} <span>{scenario.rule_id}</span>
+          </span>
+          <span className="case-name">{scenario.name}</span>
+          <span className="case-action" aria-hidden="true">
+            Open case ↗
+          </span>
+        </button>
+      ))}
     </div>
   );
 }
+
+const WORKSPACE_LINKS = [
+  ['01', '#investigation', 'Investigate'],
+  ['02', '#response', 'Compare responses'],
+  ['03', '#evidence', 'Review the record'],
+  ['04', '#experiments', 'Run an experiment'],
+] as const;
 
 export function App() {
   const ready = useConsole((s) => s.ready);
   const problem = useConsole((s) => s.problem);
   const source = useConsole((s) => s.source);
-  const scenario = useConsole((s) => s.scenarios.find((s2) => s2.id === s.scenarioId));
+  const scenario = useConsole((s) => s.scenarios.find((entry) => entry.id === s.scenarioId));
   const state = useConsole((s) => s.state);
+  const findings = useConsole((s) => s.findings);
   const dismiss = useConsole((s) => s.dismissProblem);
-
   useEffect(() => {
     void useConsole.getState().boot();
   }, []);
 
   return (
-    <div className="min-h-screen bg-ground">
-      <a
-        href="#estate"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-[2px] focus:bg-ice focus:px-3 focus:py-2 focus:font-mono focus:text-[11px] focus:text-ground"
-      >
+    <div className="workspace-shell">
+      <a href="#estate" className="workspace-skip">
         Skip to the interaction map
       </a>
-
-      {/* Standing safety statement. It is a fact about the system, so it is a
-          permanent part of the chrome rather than a dismissible notice. */}
-      <div className="border-b border-amber/25 bg-amber/[0.06]">
-        <div className="mx-auto flex max-w-[1680px] flex-wrap items-center gap-x-3 gap-y-1 px-6 py-2">
-          <span aria-hidden className="size-1.5 bg-amber" />
-          <p className="m-0 font-mono text-[10.5px] tracking-[0.1em] text-amber">
-            Simulated environment. Fictional data. No system is contacted and every control is
-            simulated.
-          </p>
-        </div>
-      </div>
-
-      <header className="sticky top-0 z-40 border-b border-rule bg-ground/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1680px] flex-wrap items-center gap-x-5 gap-y-2 px-6 py-3">
-          {/* The wordmark returns to the overview, which is the page above this one. */}
-          <a
-            href="../"
-            className="font-display text-[15px] font-semibold tracking-[0.08em] text-ink-bright transition-colors hover:text-ice"
-          >
-            <img src="./favicon.svg" width="28" height="28" alt="" className="mr-2 inline-block" />
-            Aegis Relay
-          </a>
-          <span className="hidden font-mono text-[10.5px] leading-tight text-muted-deep sm:block">
-            Population-level security
-            <br />
-            for autonomous systems
+      <aside className="workspace-rail" aria-label="Workspace navigation">
+        <a href="../" className="workspace-brand">
+          <img src="./favicon.svg" width="38" height="38" alt="" />
+          <span>
+            Aegis <em>Relay</em>
+            <small>INVESTIGATION WORKSPACE</small>
           </span>
-          <div className="ml-auto flex flex-wrap items-center gap-3">
-            {state && (
-              <span className="tabular hidden text-[10.5px] text-muted-deep md:inline">
-                {state.manifest_version}
-              </span>
-            )}
-            <SourceBadge />
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-[1680px] px-6 py-8">
-        {!ready && <p className="label">Connecting to the analysis engine</p>}
-
-        {problem && (
-          <div className="mb-6">
-            <Problem message={problem.message} hint={problem.hint} onDismiss={dismiss} />
-          </div>
-        )}
-
-        {ready && (
-          <>
-            {/* Statement of the thesis. One sentence, then straight to evidence. */}
-            <section className="mb-8 max-w-[70ch]">
-              <h1 className="font-display text-[clamp(28px,4vw,46px)] leading-[1.02] font-semibold tracking-[-0.022em] text-ink-bright uppercase">
-                Security for what happens between agents.
-              </h1>
-              <p className="mt-4 text-[14px] leading-relaxed text-muted">
-                Every action below is one its actor is permitted to take. Composed, they form a
-                route from restricted customer data to a destination outside the estate that nobody
-                designed and no single-agent policy can see. Step through it and watch the moment it
-                closes.
-              </p>
-            </section>
-
-            <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-              <ScenarioPicker />
-              {scenario && (
-                <p className="m-0 max-w-[58ch] text-[12.5px] leading-relaxed text-muted-deep">
-                  {scenario.summary}
-                </p>
-              )}
-            </div>
-
-            <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
-              {/* Primary column: time, then topology, then the lab. */}
-              <div className="flex min-w-0 flex-col gap-6">
-                <Panel title="Replay">
-                  <Transport />
-                </Panel>
-
-                <section id="estate" className="rule-box bg-surface" aria-label="Interaction map">
-                  <header className="flex flex-wrap items-center justify-between gap-4 border-b border-rule-soft px-4 py-3">
-                    <h2 className="label !text-muted">Interaction map</h2>
-                    <TopologyLegend />
-                  </header>
-                  <div className="h-[560px] p-2">
-                    <TopologyMap />
-                  </div>
-                </section>
-
-                <ContainmentPanel />
-
-                <SwarmLab />
-              </div>
-
-              {/* Secondary column: the decision surface. */}
-              <div className="flex min-w-0 flex-col gap-6">
-                <FindingPanel />
-                <Panel title="Observation ledger" flush>
-                  <EventStream />
-                </Panel>
-                <ArchitecturePanel />
-                <ImmunityPanel />
-              </div>
-            </div>
-          </>
-        )}
-      </main>
-
-      <footer className="mt-4 border-t border-rule">
-        <div className="mx-auto flex max-w-[1680px] flex-wrap items-center justify-between gap-3 px-6 py-5">
-          <p className="m-0 max-w-[76ch] text-[11.5px] leading-relaxed text-muted-deep">
-            Aegis Relay reports risky system states and deviations from a declared architecture. It
-            does not determine intent, and it never concludes that an agent is malicious.
-            {source === 'recorded' &&
-              ' This page is replaying output recorded from the analysis engine; run the core service locally to drive it live.'}
+        </a>
+        <p className="rail-label">Your investigation</p>
+        <nav aria-label="Investigation sections">
+          {WORKSPACE_LINKS.map(([number, href, title]) => (
+            <a key={href} href={href}>
+              <span>{number}</span>
+              {title}
+              <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </nav>
+        <div className="rail-note">
+          <span className="rail-label">A useful distinction</span>
+          <p>
+            A reported route describes what the system can connect. Intent and actual data movement
+            require separate evidence.
           </p>
-          <span className="label">Agent population security</span>
         </div>
-      </footer>
+        <a className="overview-link" href="../">
+          ← Return to the field guide
+        </a>
+      </aside>
+
+      <div className="workspace-body">
+        <div className="simulation-banner">
+          <span aria-hidden="true">◇</span>
+          <p>
+            Simulated environment. Fictional data. All controls operate inside this demonstration.
+          </p>
+        </div>
+        <header className="workspace-header">
+          <div>
+            <span className="workspace-kicker">Aegis Relay / Case desk</span>
+            <h1>
+              An investigation,
+              <br className="mobile-break" /> one handoff at a time.
+            </h1>
+          </div>
+          <div className="workspace-source">
+            <SourceBadge />
+            <span>{state?.manifest_version ?? 'Preparing the workspace'}</span>
+          </div>
+        </header>
+        <main>
+          {!ready && <p className="label">Preparing the analysis workspace</p>}
+          {problem && (
+            <div className="mb-6">
+              <Problem message={problem.message} hint={problem.hint} onDismiss={dismiss} />
+            </div>
+          )}
+          {ready && (
+            <>
+              <section className="case-desk" aria-labelledby="case-desk-heading">
+                <div className="case-desk-intro">
+                  <p className="workspace-kicker">Choose an environment</p>
+                  <h2 id="case-desk-heading">
+                    Same questions.
+                    <br />
+                    Different handoffs.
+                  </h2>
+                  <p>Select a case, move through its events, and follow what the engine reports.</p>
+                </div>
+                <ScenarioPicker />
+              </section>
+              <div className="workspace-counters" aria-label="Current replay counts">
+                <div>
+                  <span>Observed events</span>
+                  <strong>
+                    {state?.replayed_events ?? 0}
+                    <small> of {state?.total_events ?? 0}</small>
+                  </strong>
+                </div>
+                <div>
+                  <span>Open findings</span>
+                  <strong>
+                    {findings.length}
+                    <small> reported by the engine</small>
+                  </strong>
+                </div>
+                <div>
+                  <span>Applied controls</span>
+                  <strong>
+                    {state?.applied_controls.length ?? 0}
+                    <small> in this replay</small>
+                  </strong>
+                </div>
+              </div>
+              <section className="replay-dock" aria-label="Replay controls">
+                <div className="replay-dock-heading">
+                  <span className="workspace-kicker">Start here / Replay the case</span>
+                  <span>{scenario?.summary}</span>
+                </div>
+                <Transport />
+              </section>
+              <section id="investigation" className="workspace-chapter">
+                <div className="chapter-heading">
+                  <span>01 / Investigate</span>
+                  <h2>Find the connection that matters.</h2>
+                  <p>
+                    The map and the finding describe the same engine output, from two perspectives.
+                  </p>
+                </div>
+                <div className="investigation-grid">
+                  <section id="estate" className="topology-surface" aria-label="Interaction map">
+                    <header>
+                      <div>
+                        <span className="workspace-kicker">Observed relationships</span>
+                        <h3>Interaction map</h3>
+                      </div>
+                      <span className="map-note">Trust zones run top to bottom</span>
+                    </header>
+                    <div className="map-canvas">
+                      <TopologyMap />
+                    </div>
+                    <div className="map-legend">
+                      <TopologyLegend />
+                    </div>
+                  </section>
+                  <div className="finding-stack">
+                    <FindingPanel />
+                  </div>
+                </div>
+              </section>
+              <section id="response" className="workspace-chapter">
+                <div className="chapter-heading">
+                  <span>02 / Compare responses</span>
+                  <h2>Interrupt the route. Keep the work.</h2>
+                  <p>
+                    The planner evaluates registered controls. Review both the viable options and
+                    the reasons others were rejected.
+                  </p>
+                </div>
+                <ContainmentPanel />
+              </section>
+              <section id="evidence" className="workspace-chapter">
+                <div className="chapter-heading">
+                  <span>03 / Review the record</span>
+                  <h2>Keep the evidence within reach.</h2>
+                  <p>
+                    Return to the observations, the declared design, and the patterns awaiting
+                    review.
+                  </p>
+                </div>
+                <div className="record-grid">
+                  <Panel title="Observation ledger" flush>
+                    <EventStream />
+                  </Panel>
+                  <div className="record-reference">
+                    <ArchitecturePanel />
+                    <ImmunityPanel />
+                  </div>
+                </div>
+              </section>
+              <section id="experiments" className="workspace-chapter">
+                <div className="chapter-heading">
+                  <span>04 / Run an experiment</span>
+                  <h2>Try a different population.</h2>
+                  <p>
+                    Change the declared conditions, then ask the same detection and containment code
+                    what can form.
+                  </p>
+                </div>
+                <SwarmLab />
+              </section>
+            </>
+          )}
+        </main>
+        <footer className="workspace-footer">
+          <img src="./favicon.svg" width="25" height="25" alt="" />
+          <p>
+            Inspect the evidence. Compare the response. Verify what remains.
+            <span>
+              {source === 'recorded'
+                ? 'You are reviewing recorded engine output. Start the local service to drive the workspace live.'
+                : 'The local service supplies the current replay and analysis.'}
+            </span>
+          </p>
+          <a href="#investigation">Back to investigation ↑</a>
+        </footer>
+      </div>
     </div>
   );
 }

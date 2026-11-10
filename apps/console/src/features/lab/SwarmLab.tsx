@@ -64,9 +64,9 @@ export function SwarmLab() {
       }
     >
       <p className="m-0 mb-5 max-w-[68ch] text-[13px] leading-relaxed text-muted">
-        Describe a population you are thinking of deploying. The lab builds it, observes it, and
-        runs the same detection and containment code as the replay above — so a result here is
-        produced by the engine, not estimated about it.
+        Choose the conditions for a synthetic population. The lab generates its architecture and
+        observation stream, then runs the same rules and planner used in your investigation. Compare
+        what forms when those conditions change.
       </p>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

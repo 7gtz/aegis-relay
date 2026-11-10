@@ -14,8 +14,8 @@
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('between agents');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('one handoff at a time');
   // Replay state lives in the service, so start every journey from the top.
   await page.getByRole('button', { name: 'Restart' }).click();
   await expect(page.getByText('Nothing composed yet.')).toBeVisible();
@@ -154,4 +154,35 @@ test('the console is operable from the keyboard alone', async ({ page }) => {
   // Every replay control must be reachable and operable without a pointer.
   await page.getByRole('button', { name: 'Run to end' }).press('Enter');
   await expect(page.getByText('PS-001 · finding')).toBeVisible();
+});
+
+test('workspace navigation preserves the current investigation', async ({ page }) => {
+  await page.getByRole('button', { name: 'Run to end' }).click();
+  await expect(page.getByText('PS-001 · finding')).toBeVisible();
+  await page
+    .getByRole('navigation', { name: 'Investigation sections' })
+    .getByRole('link', { name: /Compare responses/ })
+    .click();
+  await expect(page).toHaveURL(/#response$/);
+  await expect(page.getByRole('button', { name: 'Apply recommended control' })).toBeVisible();
+  await page
+    .getByRole('navigation', { name: 'Investigation sections' })
+    .getByRole('link', { name: /Investigate/ })
+    .click();
+  await expect(
+    page.getByRole('region', { name: 'Replay controls' }).getByText('12 / 12', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText('PS-001 · finding')).toBeVisible();
+});
+
+test('the narrow workspace keeps case selection and replay usable', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole('radio', { name: /unintended export path/i })).toBeVisible();
+  await page.getByRole('button', { name: 'Run to end' }).click();
+  await expect(page.getByText('PS-001 · finding')).toBeVisible();
+  const dimensions = await page.evaluate(() => ({
+    content: document.documentElement.scrollWidth,
+    viewport: window.innerWidth,
+  }));
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
