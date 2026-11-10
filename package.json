@@ -1,0 +1,43 @@
+{
+  "name": "aegis-relay-platform",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Aegis Relay: detects risky capabilities that emerge between individually legitimate AI agents, and contains them with the smallest pre-authorised action that preserves declared work.",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22.16.0 <23",
+    "pnpm": ">=11.19.0 <12"
+  },
+  "scripts": {
+    "console:dev": "pnpm --filter @aegis-relay/console dev",
+    "console:build": "pnpm --filter @aegis-relay/console build",
+    "build": "pnpm run console:build && node scripts/build-site.mjs",
+    "console:check": "pnpm --filter @aegis-relay/console check",
+    "console:test": "pnpm --filter @aegis-relay/console test",
+    "console:e2e": "pnpm --filter @aegis-relay/console test:e2e",
+    "check": "pnpm run console:check",
+    "format:write": "pnpm --filter @aegis-relay/console format:write"
+  },
+  "keywords": [
+    "ai-security",
+    "agent-security",
+    "multi-agent-systems",
+    "ai-agents",
+    "llm-security",
+    "cybersecurity",
+    "threat-detection",
+    "prompt-injection",
+    "data-exfiltration",
+    "graph-analysis",
+    "defensive-security",
+    "agentic-ai"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/7gtz/aegis-relay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/7gtz/aegis-relay/issues"
+  }
+}
