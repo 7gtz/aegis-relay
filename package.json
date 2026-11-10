@@ -16,7 +16,9 @@
     "console:test": "pnpm --filter @aegis-relay/console test",
     "console:e2e": "pnpm --filter @aegis-relay/console test:e2e",
     "check": "pnpm run console:check",
-    "format:write": "pnpm --filter @aegis-relay/console format:write"
+    "format:write": "pnpm --filter @aegis-relay/console format:write",
+    "repo:check": "node scripts/check-repository.mjs && node --test scripts/build-site.test.mjs",
+    "submission:assets": "node scripts/export-submission-assets.mjs"
   },
   "keywords": [
     "ai-security",

@@ -1,41 +1,52 @@
-# Verification
+# Verification record
 
-Verified on 10 November 2026 with Node 22.16.0, pnpm 11.19.0, Python 3.12.16, and Chromium.
+Repository audit on **10 November 2026**, using Node 22.16.0, pnpm 11.19.0, Python 3.12.16, and Chromium. The current suite contains **244 tests**: 195 Python, 30 console, 17 browser journeys, and two static-site assembly tests.
 
-## Executable checks
+## Scope and evidence
 
-| Check | Result |
-| --- | --- |
-| Locked dependency installation | Passed; dependency locks unchanged |
-| Core Ruff format, lint, and strict mypy | Passed; 49 source files |
-| Core pytest | 195 passed |
-| Console Prettier, ESLint, and TypeScript | Passed |
-| Console Vitest | 23 passed |
-| Console browser journeys | 15 passed |
-| Production console build and static site assembly | Passed |
-| Overview interaction smoke | Conceptual lab, response, pattern recording, reset, and inspector passed; no JavaScript errors |
-| Documentation links | All local links resolve |
-| Recorded-output comparison | All 183 JSON files equal after identity normalization against the original engine recording |
-| Responsive review | Desktop and 390px layouts inspected; both documents fit the viewport while wide tables and navigation scroll within their own containers |
+| Area | Check | Result |
+| --- | --- | --- |
+| Python core | Ruff format/lint, strict mypy, pytest | Passed; 195 tests and 49 checked source/test files |
+| Console | Prettier, ESLint, TypeScript, Vitest 4.1.12 | Passed; 30 tests |
+| Recorded operator workflow | Chromium journeys | Passed; 17 journeys |
+| Live operator workflow | Same Chromium journeys against the local FastAPI service | Passed; 17 journeys, including reset and promotion through the HTTP API |
+| Generated artifacts | Regenerate OpenAPI and all 183 recorded JSON files | No diff |
+| Static publication | Vite 7.3.7 build and root site assembly | Passed |
+| Assembly failure behavior | Temporary-fixture Node tests | Two passed: missing build preserves previous output; complete build replaces stale output and preserves relative assets |
+| Documentation | Local Markdown targets and JSON syntax | Passed with `pnpm repo:check` |
+| Mermaid | Six README diagrams | Parsed and rendered |
+| Submission artwork | Four exact-size PNG exports and visual inspection | Thumbnail, cover, social card, transparent mark exported successfully |
+| Production dependency graph | `pnpm audit --prod` | Zero reported advisories |
+| Complete dependency graph | `pnpm audit` | One moderate development-only advisory; no high or critical advisories |
 
-**233 tests pass.** The existing 231 tests remain, with two added browser journeys checking that chapter navigation preserves investigation state and that the narrow workspace remains usable. The heading assertion follows the revised page copy; security assertions remain intact.
+The suite count describes distinct tests. Running a browser journey against both recorded and live transports does not count it twice. Read [Dependency review](DEPENDENCIES.md) for package versions, advisory references, and the remaining TypeScript ESLint / minimatch dependency.
 
-## Preserved behavior
+## Bugs reproduced and corrected
 
-This presentation revision has no changes to core Python source, API routes, manifests, observation streams, generated contracts, recorded demo JSON, console transport, state-store actions, or dependency locks. The overview retains all eight existing direct interaction bindings and all ten graph identities; generated controls and their existing logic remain available.
+Seven new transport tests exercise restart, post-containment scrubbing, fresh pattern drafts, scenario isolation, unknown plan rejection, legal review transitions, and idempotent application. Five failed against the previous recorded transport before the fixes. Two new browser journeys cover restarting after a completed containment and scrubbing after a control. The promotion journey also exposed an array-identity issue that prevented the changed review stage from rendering; promotion now replaces the pattern collection.
 
-Changes affect visual composition, copy, navigation, bundled fonts, vector artwork, share cards, screenshots, and documentation. The chapter links scroll without unmounting feature panels. New counts render existing engine state rather than computing a security assessment.
+A seek rebuilds the selected replay, clears derived controls and reviewed patterns, and refreshes the review panel. Application uses a fresh session copy of the recording, so a promoted pattern cannot mutate the cached source and leak into a later run. Unknown plan IDs fail without creating a verified result.
 
-The Python suite reports two pre-existing dependency deprecation warnings from Starlette/httpx and AnyIO. They do not fail the checks.
+The sweep also corrected setup examples that used inactive environment names, API examples missing `/api/v1`, and review-stage copy that implied automatic matching or enforcement. CI now checks repository links and builds the assembled field guide as well as the workspace.
+
+## Preserved boundaries
+
+Core Python code, detector rules, candidate costs and ordering, manifest semantics, API routes, fixture observations, generated OpenAPI, and recorded engine JSON are unchanged. The corrections bring recorded-session lifecycle behavior into line with the live reset-and-replay contract.
+
+This is a simulated prototype with fictional data. Passing checks establish the tested behavior; they do not prove complete threat coverage, payload inspection, or production enforcement. Pattern stages remain explicit review metadata.
 
 ## Reproduce
 
 ```bash
 # Repository root
 pnpm install --frozen-lockfile
+pnpm repo:check
 pnpm console:check
 pnpm build
 pnpm console:e2e
+pnpm submission:assets
+pnpm audit --prod
+pnpm audit
 
 # services/core
 uv sync --group dev --locked
@@ -47,17 +58,12 @@ uv run python -m aegis_relay_core.contract
 uv run python -m aegis_relay_core.snapshot
 ```
 
-On this macOS host, Vite's bundled config loader stalled, so local compilation and component checks used `pnpm exec vite build --configLoader runner` and `pnpm exec vitest run --configLoader runner` from `apps/console`. The standard commands remain in CI. Browser tests use the built workspace and a local HTTP server. Fonts are bundled, including their SIL Open Font Licenses, so font-CDN availability does not affect page loading.
+The full package audit exits non-zero for the documented moderate development-tool advisory. All executable test suites pass. The Python suite emits two existing dependency deprecation warnings from Starlette/httpx and AnyIO.
 
-## Screenshot and documentation revision
+On this macOS host, Vite's bundled configuration loader stalled, so local compilation and component tests used `pnpm exec vite build --configLoader runner` and `pnpm exec vitest run --configLoader runner` from `apps/console`. CI uses the normal commands. Browser journeys use the built console. Local fonts and their SIL Open Font Licenses are bundled.
 
-The investigation detail panels now participate directly in their responsive grid, making the finding, composed path, and signals visible side by side on wide screens. This changes presentation only. Console formatting, lint, TypeScript, all 23 component tests, and all 15 browser journeys passed again. The production console and assembled site built successfully using the local runner loader described above.
+## Hosted demonstration
 
-Two new screenshots show the completed support investigation and an actual 12-agent Swarm Lab result. All README local links resolve, and all six native Mermaid diagrams were parsed and rendered with Mermaid. The root Vercel configuration builds the same static artifact; see [Deployment](DEPLOYMENT.md).
+[Field guide](https://aegis-relay-six.vercel.app/) · [Investigation workspace](https://aegis-relay-six.vercel.app/console/)
 
-
-## Public Vercel demo
-
-Published at [aegis-relay-six.vercel.app](https://aegis-relay-six.vercel.app/) with the recorded workspace at [/console/](https://aegis-relay-six.vercel.app/console/). Vercel built the checked source with Node 22.x and pnpm 11.19.0. The documentation/screenshots revision passed [GitHub CI](https://github.com/7gtz/aegis-relay/actions/runs/42823998555), including all 233 tests and generated-output checks.
-
-A fresh headless browser with no Vercel login checked the published field-guide control interaction, recorded source badge, support replay, recommended control, both verification outcomes, lab experiment, and 390px layout. All passed with no page JavaScript errors. The root responded with HTTP 200 without authentication. The live Python engine is not part of this deployment. Deployment is currently manual rather than Git-linked.
+The Vercel release serves the static field guide and recorded workspace, not the Python service. A fresh browser without Vercel authentication checked the overview interaction, recorded source badge, replay, recommended control, verification outcomes, lab, and narrow layout. The deployment remains manual until the private GitHub repository is connected to Vercel; see [Deployment](DEPLOYMENT.md).

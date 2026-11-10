@@ -11,7 +11,7 @@ Aegis Relay is an investigation workspace for security risks that emerge across 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-35694b)](services/core/pyproject.toml)
 [![Node 22](https://img.shields.io/badge/Node-22-35694b)](package.json)
 
-[**Open the demo**](https://aegis-relay-six.vercel.app/) · [**Launch the workspace**](https://aegis-relay-six.vercel.app/console/) · [Quick start](#quick-start) · [Investigation walkthrough](#work-a-case) · [Architecture](#how-the-engine-works) · [API](#http-api) · [Handbook](docs/README.md)
+[**Open the demo**](https://aegis-relay-six.vercel.app/) · [**Launch the workspace**](https://aegis-relay-six.vercel.app/console/) · [Quick start](#quick-start) · [Investigation walkthrough](#work-a-case) · [Architecture](#how-the-engine-works) · [API](#http-api) · [Handbook](docs/README.md) · [Devpost kit](docs/submission/README.md) · [Changelog](CHANGELOG.md)
 
 ## What you can do
 
@@ -98,7 +98,7 @@ uv sync --group dev --locked
 uv run uvicorn aegis_relay_core.main:app --host 127.0.0.1 --port 8000
 ```
 
-Reload the console and check for **live engine** in the header. Open <http://127.0.0.1:8000/docs> for the interactive API reference or <http://127.0.0.1:8000/health> for operating-mode metadata.
+Reload the console and check for **live engine** in the header. Open <http://127.0.0.1:8000/docs> for the interactive API reference or <http://127.0.0.1:8000/api/v1/health> for operating-mode metadata.
 
 | Setting | Purpose |
 | --- | --- |
@@ -285,7 +285,7 @@ CI regenerates both the OpenAPI contract and recordings and fails on drift. This
 
 ## HTTP API
 
-The local service runs at `http://127.0.0.1:8000`. The [committed OpenAPI document](contracts/openapi/aegis-relay-core-v1.json) and the running service's `/docs` are the complete contract.
+The API base is `http://127.0.0.1:8000/api/v1`; all routes in the table below are relative to that base. The [committed OpenAPI document](contracts/openapi/aegis-relay-core-v1.json) and the running service's `/docs` are the complete contract.
 
 | Method | Route | Purpose |
 | --- | --- | --- |
@@ -307,7 +307,7 @@ The local service runs at `http://127.0.0.1:8000`. The [committed OpenAPI docume
 For a reproducible live lab run:
 
 ```bash
-curl --fail-with-body http://127.0.0.1:8000/lab/simulate \
+curl --fail-with-body http://127.0.0.1:8000/api/v1/lab/simulate \
   -H 'Content-Type: application/json' \
   --data '{"population":12,"connectivity":"normal","shared_memory":"enabled","delegation":"normal","external_access":"broad","perturbation":"unregistered_shared_resource"}'
 ```
@@ -356,10 +356,11 @@ The [deployment guide](docs/DEPLOYMENT.md) covers Vercel settings, optional GitH
 
 ## Verification and reproducibility
 
-The suite contains **233 tests**: **195 Python**, **23 console**, and **15 browser journeys**. CI also checks formatting, lint, types, contract drift, and recorded-output drift. The [verification record](docs/VERIFICATION.md) distinguishes completed checks from the project's broader scope.
+The suite contains **244 tests**: **195 Python**, **30 console**, **17 browser journeys**, and **2 static-assembly tests**. CI also checks formatting, lint, types, local documentation links, JSON syntax, contract drift, and recorded-output drift. The [verification record](docs/VERIFICATION.md) distinguishes completed checks from the project's broader scope.
 
 ```bash
 # Repository root
+pnpm repo:check
 pnpm console:check
 pnpm build
 pnpm console:e2e
@@ -374,6 +375,8 @@ uv run python -m aegis_relay_core.contract
 uv run python -m aegis_relay_core.snapshot
 ```
 
+The [dependency review](docs/DEPENDENCIES.md) records the applied tooling fixes, clean production audit, and remaining moderate development-only advisory.
+
 Inspect generated contract and recording diffs before committing them. Browser journeys exercise the recorded transport without a live service and cover the full investigation/control/review flow, navigation state, and narrow-screen use.
 
 ## Scope and trust boundaries
@@ -387,6 +390,12 @@ Inspect generated contract and recording diffs before committing them. Browser j
 
 Read [SECURITY.md](SECURITY.md) for the security model and reporting guidance. Research references are collected in [Research](docs/RESEARCH.md); citations do not imply endorsement or an implemented integration.
 
+## Submission assets
+
+The [Devpost submission kit](docs/submission/README.md) includes a 3:2 thumbnail, a widescreen cover, a social card, a transparent logo export, gallery captions, draft project story, and a two-minute demo script. Editable HTML/SVG source and `pnpm submission:assets` make the brand exports reproducible.
+
+![Aegis Relay Devpost thumbnail](docs/submission/assets/thumbnail.png)
+
 ## Documentation and contributions
 
 | Guide | Read it for |
@@ -398,6 +407,7 @@ Read [SECURITY.md](SECURITY.md) for the security model and reporting guidance. R
 | [Deployment](docs/DEPLOYMENT.md) | Static hosting and optional live engine connection |
 | [Verification](docs/VERIFICATION.md) | Executable evidence and current limitations |
 | [Research](docs/RESEARCH.md) | Background and related work |
+| [Submission kit](docs/submission/README.md) | Devpost artwork, gallery, copy, and demo script |
 
 Keep security decisions in the core and preserve the distinction between engine output and conceptual illustrations. A change to detection or control semantics needs a test of the affected guarantee. An interface change should keep the operator's evidence and failed outcomes visible. See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change.
 

@@ -32,21 +32,21 @@ uv sync --group dev --locked
 uv run uvicorn aegis_relay_core.main:app --host 127.0.0.1 --port 8000
 ```
 
-Reload the workspace. Its source badge should read **live engine**. The API reference is available at <http://127.0.0.1:8000/docs>; `/health` identifies the service and its simulation posture.
+Reload the workspace. Its source badge should read **live engine**. The API reference is available at <http://127.0.0.1:8000/docs>; `/api/v1/health` identifies the service and its simulation posture.
 
 Replay state belongs to a scenario within the service. Multiple clients controlling the same scenario share that state, so use one operator session when checking a case.
 
 ## 3. Configure the connection
 
-Copy the relevant `.env.example` when you need local settings. Keep `.env` files untracked.
+Copy `apps/console/.env.example` to `apps/console/.env` for Vite settings. For service settings, copy `services/core/.env.example` to `services/core/.env` and start Uvicorn from that directory with `--env-file .env`. Keep `.env` files untracked. The API base is `http://127.0.0.1:8000/api/v1`; the console setting takes the origin only.
 
 - `VITE_AEGIS_RELAY_API_BASE` selects the console's API base URL. It defaults to `http://127.0.0.1:8000`. Vite reads this value when it starts or builds.
 - `AEGIS_RELAY_CORS_ORIGINS` sets a comma-separated list of allowed service origins, replacing the default list. Without this setting, the service allows the local console development and preview origins.
-- The root and service `.env.example` files also list local environment, logging, and storage conventions. Do not assume those entries enable a persistence adapter: the demonstrated replay uses the in-memory repository.
+- The demonstrated replay uses an in-memory repository. No database URL or storage adapter is configured by these example files.
 
 ## Common checks
 
-**The badge stays on recorded session.** Confirm that `/health` responds at the configured base URL, then reload. Check the browser console for a CORS error if you changed origins.
+**The badge stays on recorded session.** Confirm that `/api/v1/health` responds at the configured base URL, then reload. Check the browser console for a CORS error if you changed origins.
 
 **A port is already in use.** Stop the other process or choose another service port and update `VITE_AEGIS_RELAY_API_BASE`. The Vite scripts use strict ports and will report the conflict.
 

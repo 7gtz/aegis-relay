@@ -9,8 +9,10 @@ Choose a guide based on what you want to do next.
 | Understand how evidence becomes a finding and response | [Architecture](ARCHITECTURE.md) |
 | Change the project without crossing its decision boundaries | [Development](DEVELOPMENT.md) |
 | Run checks and inspect the current verification scope | [Verification](VERIFICATION.md) |
-| Build a static release or configure Pages | [Deployment](DEPLOYMENT.md) |
+| Build a static release or configure Vercel / Pages | [Deployment](DEPLOYMENT.md) |
+| Inspect dependency updates and advisory status | [Dependency review](DEPENDENCIES.md) |
 | Read the background sources | [Research notes](RESEARCH.md) |
 | Use the identity and regenerate presentation assets | [Brand system](brand/README.md) |
+| Prepare a Devpost entry or demo video | [Submission kit](submission/README.md) |
 
 The [security policy](../SECURITY.md) states the supported scope. The [OpenAPI document](../contracts/openapi/aegis-relay-core-v1.json) is generated from the application; the local service also serves interactive documentation at `/docs`.

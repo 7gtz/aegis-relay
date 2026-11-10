@@ -15,8 +15,8 @@ The identity is built around a handoff: two endpoints, a route between them, and
 | `handoff-atlas.svg` | Original conceptual network plate |
 | `../assets/overview-banner.svg` | Repository introduction |
 | `../assets/replay.svg` | Three-stage process illustration |
-| `apps/console/public/social-card.html` | Source for the 1280 × 640 share image |
-| `apps/console/public/showcase-card.html` | Source for the 1200 × 800 showcase image |
+| `../../apps/console/public/social-card.html` | Source for the 1280 × 640 share image |
+| `../../apps/console/public/showcase-card.html` | Source for the 1200 × 800 showcase image |
 | `../assets/gallery/build-cards.html` | Screenshot gallery source |
 
 The site owns a copy of the handoff atlas under `apps/site/assets`. The new vector artwork is editable source. Screenshots are captures of the running workspace and field guide, not painted mock data.
@@ -32,3 +32,5 @@ The field guide pairs DM Serif Display with DM Sans. The workspace uses DM Sans 
 Repository `aegis-relay`; JavaScript scope `@aegis-relay`; Python distribution `aegis-relay-core`; Python module `aegis_relay_core`; environment prefix `AEGIS_RELAY_`; console base-URL setting `VITE_AEGIS_RELAY_API_BASE`.
 
 Required original copyright attribution stays in `LICENSE`; it is not part of the product identity.
+
+Submission-ready PNG artwork, captions, a project story, and a video walkthrough live in the [Devpost submission kit](../submission/README.md). Export its editable HTML and SVG sources with `pnpm submission:assets`.

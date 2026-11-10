@@ -14,6 +14,7 @@ From the root:
 
 ```bash
 pnpm console:dev
+pnpm repo:check
 pnpm console:check
 pnpm console:test
 pnpm console:e2e
@@ -50,3 +51,10 @@ Run the checks relevant to the edited layer. A security-semantic change needs a 
 AI tools assisted the original research, architecture, design, coding, and debugging: Gemini, Claude, ChatGPT, Antigravity, and coding assistants. Codex assisted this identity and interface revision. Review and executable checks remain part of the development process.
 
 There is no model call in the analysis runtime. The implemented rules and planner run as deterministic Python without model-provider credentials.
+
+
+## Submission assets
+
+The [Devpost kit](submission/README.md) contains PNG exports, editable artwork, gallery captions, and draft submission copy. Regenerate the four brand images with `pnpm submission:assets` after installing Chromium through Playwright. Use genuine workspace captures for the gallery; the artwork itself is explicitly conceptual.
+
+`pnpm repo:check` validates tracked Markdown targets and JSON syntax, then exercises static-site assembly in temporary fixtures. CI runs it and builds the full root site, so a passing console build alone cannot hide a broken field-guide assembly.

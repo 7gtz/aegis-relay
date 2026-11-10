@@ -4,8 +4,8 @@
  *   dist/            the landing page — a static page, no build step
  *   dist/console/    the console, as built by Vite
  *
- * This runs in CI and locally from the same command, so what GitHub Pages
- * serves is what `pnpm run build` produces on any machine.
+ * This runs in CI and locally from the same command. Vercel, Pages, and
+ * local static servers all consume the resulting dist tree.
  */
 
 import { cp, mkdir, rm, readdir } from 'node:fs/promises';
