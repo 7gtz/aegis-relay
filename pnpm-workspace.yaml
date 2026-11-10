@@ -6,3 +6,7 @@ packages:
 # fresh `pnpm install` from stopping to ask.
 allowBuilds:
   esbuild: false
+
+# Patch the source-map parser used by the CSS build chain (GHSA-68fv-2mgg-jv7q).
+overrides:
+  source-map-js: 1.2.2
