@@ -77,8 +77,12 @@ class EventValidator:
         if not isinstance(raw.get("sequence"), int):
             raise EventValidationError("An observation must carry an integer 'sequence'.")
 
+        context = raw.get("context") or {}
+        if not isinstance(context, dict):
+            raise EventValidationError("An observation's 'context' must be a JSON object.")
+
         candidate = dict(raw)
-        candidate["context"] = EventValidator.redact(raw.get("context") or {})
+        candidate["context"] = EventValidator.redact(context)
 
         try:
             return ObservationEvent(**candidate)
