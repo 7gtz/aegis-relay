@@ -96,7 +96,7 @@ on screen rather than implying a live service.
 
 ### What is demonstrated, and what is illustrated
 
-A submission that blurs this line is worth less than one that draws it, so:
+The console and overview serve different purposes:
 
 **Produced by the engine.** Reproducible, covered by tests, byte-identical on
 every replay — this is what the console shows and what CI asserts:
@@ -649,4 +649,4 @@ Two things are worth being precise about:
 
 ## License
 
-[MIT](LICENSE) · Built for the Agent population security
+[MIT](LICENSE) · Agent population security
