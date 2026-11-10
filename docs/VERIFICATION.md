@@ -64,6 +64,6 @@ On this macOS host, Vite's bundled configuration loader stalled, so local compil
 
 ## Hosted demonstration
 
-[Field guide](https://aegis-relay-six.vercel.app/) · [Investigation workspace](https://aegis-relay-six.vercel.app/console/)
+[Field guide](https://aegis-relay-six.vercel.app/) · [Investigation workspace](https://aegis-relay-six.vercel.app/console/) · [Demo video](https://youtu.be/dDKlWDBkJ_8)
 
 The Vercel release serves the static field guide and recorded workspace, not the Python service. A fresh browser without Vercel authentication checked the overview interaction, recorded source badge, replay, recommended control, verification outcomes, lab, and narrow layout. The deployment remains manual until the private GitHub repository is connected to Vercel; see [Deployment](DEPLOYMENT.md).

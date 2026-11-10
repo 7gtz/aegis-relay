@@ -27,11 +27,11 @@ The artwork uses the project's existing relay-frame identity, forest palette, bu
 - [Gallery captions and alt text](GALLERY.md)
 - [Verification record](../VERIFICATION.md)
 
-**Demo:** [Field guide](https://aegis-relay-six.vercel.app/) · [Workspace](https://aegis-relay-six.vercel.app/console/)
+**Demo:** [Field guide](https://aegis-relay-six.vercel.app/) · [Workspace](https://aegis-relay-six.vercel.app/console/) · [Video walkthrough](https://youtu.be/dDKlWDBkJ_8)
 
 **Source:** [7gtz/aegis-relay](https://github.com/7gtz/aegis-relay), private. Judges need repository access if source review is required; the public recorded demo needs no login.
 
-The story is ready to adapt to the target hackathon. Add the actual team credits, event-specific answers, and final video link. It makes no claims about when the project was created, sponsor usage, awards, or production adoption.
+The story is ready to adapt to the target hackathon. Add the actual team credits and event-specific answers. It makes no claims about when the project was created, sponsor usage, awards, or production adoption.
 
 ## Regenerate the artwork
 

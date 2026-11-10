@@ -63,5 +63,6 @@ No model-provider API or model inference is used in the analysis runtime. Develo
 
 - [Open the field guide](https://aegis-relay-six.vercel.app/)
 - [Launch the investigation workspace](https://aegis-relay-six.vercel.app/console/)
+- [Watch the demo video](https://youtu.be/dDKlWDBkJ_8)
 - [Read the technical README](../../README.md)
 - [Inspect verification and limitations](../VERIFICATION.md)
