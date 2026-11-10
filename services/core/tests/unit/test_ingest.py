@@ -53,6 +53,10 @@ class TestRejection:
         with pytest.raises(EventValidationError, match="sequence"):
             EventValidator.validate(_raw(sequence="third"))
 
+    def test_non_object_context_is_rejected_at_the_ingest_boundary(self) -> None:
+        with pytest.raises(EventValidationError, match="context"):
+            EventValidator.validate(_raw(context="payload"))
+
     def test_a_non_object_is_rejected(self) -> None:
         with pytest.raises(EventValidationError):
             EventValidator.validate("not an event")  # type: ignore[arg-type]
