@@ -2,6 +2,14 @@
 
 The release contains a static field guide and a compiled investigation workspace. Recorded engine output is bundled, so the demonstration works without a Python service. The source repository can remain private while the static demo is public.
 
+## Current demonstration
+
+- [Field guide](https://aegis-relay-six.vercel.app/)
+- [Investigation workspace](https://aegis-relay-six.vercel.app/console/)
+- [Vercel project](https://vercel.com/7gtzs-projects/aegis-relay)
+
+The demo was deployed from checked source files through the Vercel API. GitHub is not linked for automatic deployments because the Vercel Git integration does not yet have access to this private repository. A push alone will not update the demo. Redeploy the checked source through Vercel, or connect the repository in the project's Git settings to enable automatic deployments.
+
 ## Build locally
 
 ```bash

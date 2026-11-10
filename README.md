@@ -11,7 +11,7 @@ Aegis Relay is an investigation workspace for security risks that emerge across 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-35694b)](services/core/pyproject.toml)
 [![Node 22](https://img.shields.io/badge/Node-22-35694b)](package.json)
 
-[Quick start](#quick-start) · [Investigation walkthrough](#work-a-case) · [Architecture](#how-the-engine-works) · [API](#http-api) · [Handbook](docs/README.md)
+[**Open the demo**](https://aegis-relay-six.vercel.app/) · [**Launch the workspace**](https://aegis-relay-six.vercel.app/console/) · [Quick start](#quick-start) · [Investigation walkthrough](#work-a-case) · [Architecture](#how-the-engine-works) · [API](#http-api) · [Handbook](docs/README.md)
 
 ## What you can do
 

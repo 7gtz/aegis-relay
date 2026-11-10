@@ -39,8 +39,8 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/7gtz/aegis-relay"
-"Live console" = "https://7gtz.github.io/aegis-relay/console/"
-Overview = "https://7gtz.github.io/aegis-relay/"
+"Live console" = "https://aegis-relay-six.vercel.app/console/"
+Overview = "https://aegis-relay-six.vercel.app/"
 Source = "https://github.com/7gtz/aegis-relay"
 Issues = "https://github.com/7gtz/aegis-relay/issues"
 

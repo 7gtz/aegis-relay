@@ -54,3 +54,10 @@ On this macOS host, Vite's bundled config loader stalled, so local compilation a
 The investigation detail panels now participate directly in their responsive grid, making the finding, composed path, and signals visible side by side on wide screens. This changes presentation only. Console formatting, lint, TypeScript, all 23 component tests, and all 15 browser journeys passed again. The production console and assembled site built successfully using the local runner loader described above.
 
 Two new screenshots show the completed support investigation and an actual 12-agent Swarm Lab result. All README local links resolve, and all six native Mermaid diagrams were parsed and rendered with Mermaid. The root Vercel configuration builds the same static artifact; see [Deployment](DEPLOYMENT.md).
+
+
+## Public Vercel demo
+
+Published at [aegis-relay-six.vercel.app](https://aegis-relay-six.vercel.app/) with the recorded workspace at [/console/](https://aegis-relay-six.vercel.app/console/). Vercel built the checked source with Node 22.x and pnpm 11.19.0. The documentation/screenshots revision passed [GitHub CI](https://github.com/7gtz/aegis-relay/actions/runs/42823998555), including all 233 tests and generated-output checks.
+
+A fresh headless browser with no Vercel login checked the published field-guide control interaction, recorded source badge, support replay, recommended control, both verification outcomes, lab experiment, and 390px layout. All passed with no page JavaScript errors. The root responded with HTTP 200 without authentication. The live Python engine is not part of this deployment. Deployment is currently manual rather than Git-linked.
