@@ -186,3 +186,32 @@ test('the narrow workspace keeps case selection and replay usable', async ({ pag
   }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
+
+test('a completed containment can restart and produce a fresh draft', async ({ page }) => {
+  await page.getByRole('button', { name: 'Run to end' }).click();
+  await page.getByRole('button', { name: 'Apply recommended control' }).click();
+  await page.getByRole('button', { name: 'Promote to shadow', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Promote to active', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Restart', exact: true }).click();
+  await expect(page.getByText('Nothing composed yet.')).toBeVisible();
+  await expect(page.getByText('0 recorded', { exact: true })).toBeVisible();
+  await expect(page.getByText('Containment verified')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Run to end' }).click();
+  await expect(page.getByText('PS-001 · finding')).toBeVisible();
+  await page.getByRole('button', { name: 'Apply recommended control' }).click();
+  await expect(page.getByRole('button', { name: 'Promote to shadow', exact: true })).toBeVisible();
+});
+
+test('scrubbing after containment clears the derived control and review state', async ({
+  page,
+}) => {
+  await page.getByRole('button', { name: 'Run to end' }).click();
+  await page.getByRole('button', { name: 'Apply recommended control' }).click();
+  await expect(page.getByText('Containment verified')).toBeVisible();
+  await page.getByLabel('Replay position').fill('11');
+  await expect(page.getByText('Nothing composed yet.')).toBeVisible();
+  await expect(page.getByText('0 recorded', { exact: true })).toBeVisible();
+  await expect(page.getByText('Containment verified')).toHaveCount(0);
+  await page.getByLabel('Replay position').fill('12');
+  await expect(page.getByText('PS-001 · finding')).toBeVisible();
+});

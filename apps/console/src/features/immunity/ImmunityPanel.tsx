@@ -17,8 +17,9 @@ const STAGES: ImmunityPattern['lifecycle'][] = ['draft', 'shadow', 'active'];
 
 const STAGE_MEANING: Record<ImmunityPattern['lifecycle'], string> = {
   draft: 'Recorded and awaiting review. Takes no part in analysis.',
-  shadow: 'Reported when matched, but never acted on.',
-  active: 'Matched and acted on under the same containment constraints.',
+  shadow:
+    'Marked for observation and further review. This prototype does not match patterns automatically.',
+  active: 'Approved review state. This prototype does not enforce patterns automatically.',
 };
 
 function NextStep({ pattern }: { pattern: ImmunityPattern }) {

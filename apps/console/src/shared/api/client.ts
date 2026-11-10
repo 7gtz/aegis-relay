@@ -208,7 +208,7 @@ export function labKey(config: SwarmConfig): string {
  */
 function createRecordedTransport(): Transport {
   const cache = new Map<string, Promise<RecordedScenario>>();
-  const contained = new Set<string>();
+  const contained = new Map<string, RecordedScenario['contained']>();
   let index: Promise<RecordedIndex> | null = null;
 
   const loadIndex = () => (index ??= json<RecordedIndex>(`${SNAPSHOT}/index.json`));
@@ -240,30 +240,41 @@ function createRecordedTransport(): Transport {
     },
 
     async state(scenario, cursor) {
-      if (contained.has(scenario)) return (await loadScenario(scenario)).contained.state;
-      return (await stepAt(scenario, cursor)).state;
+      const step = await stepAt(scenario, cursor);
+      // Seeking rebuilds the replay, just like the live transport's reset + advance.
+      contained.delete(scenario);
+      return step.state;
     },
 
     async findings(scenario, cursor) {
-      if (contained.has(scenario)) return (await loadScenario(scenario)).contained.findings;
+      const applied = contained.get(scenario);
+      if (applied) return applied.findings;
       return (await stepAt(scenario, cursor)).findings;
     },
 
-    async apply(scenario) {
+    async apply(scenario, planId) {
       const recorded = await loadScenario(scenario);
-      contained.add(scenario);
-      return recorded.contained;
+      if (planId !== recorded.contained.plan.id) {
+        throw new TransportError(`No recorded plan ${planId} for ${scenario}.`);
+      }
+      let applied = contained.get(scenario);
+      if (!applied) {
+        // Review actions mutate the session copy, never the cached recording.
+        applied = structuredClone(recorded.contained);
+        contained.set(scenario, applied);
+      }
+      return applied;
     },
 
     async immunity(scenario) {
-      if (!contained.has(scenario)) return [];
-      return (await loadScenario(scenario)).contained.immunity;
+      return contained.get(scenario)?.immunity ?? [];
     },
 
     async promote(scenario, patternId, to) {
-      const patterns = await this.immunity(scenario);
+      const session = contained.get(scenario);
+      const patterns = session?.immunity ?? [];
       const pattern = patterns.find((candidate) => candidate.id === patternId);
-      if (!pattern) throw new TransportError(`No immunity pattern ${patternId}.`);
+      if (!session || !pattern) throw new TransportError(`No immunity pattern ${patternId}.`);
       const legal: Record<string, string[]> = {
         draft: ['shadow'],
         shadow: ['active', 'draft'],
@@ -275,9 +286,15 @@ function createRecordedTransport(): Transport {
           'A pattern must be observed in shadow before it is allowed to act.',
         );
       }
-      pattern.lifecycle = to as ImmunityPattern['lifecycle'];
-      pattern.promoted_at = new Date().toISOString();
-      return pattern;
+      const promoted = {
+        ...pattern,
+        lifecycle: to as ImmunityPattern['lifecycle'],
+        promoted_at: new Date().toISOString(),
+      };
+      session.immunity = patterns.map((candidate) =>
+        candidate.id === patternId ? promoted : candidate,
+      );
+      return promoted;
     },
 
     async simulate(config) {

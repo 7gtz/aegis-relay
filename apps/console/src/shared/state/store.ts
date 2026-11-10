@@ -150,8 +150,6 @@ export const useConsole = create<ConsoleState>((set, get) => ({
       const architecture = await transport.architecture(id);
       set({ architecture });
       await get().seek(0);
-      const immunity = await transport.immunity(id);
-      set({ immunity });
     } catch (error) {
       set({ problem: describe(error) });
     } finally {
@@ -165,9 +163,13 @@ export const useConsole = create<ConsoleState>((set, get) => ({
     set({ busy: true });
     try {
       const state = await transport.state(scenarioId, cursor);
-      const envelope = await transport.findings(scenarioId, cursor);
+      const [envelope, immunity] = await Promise.all([
+        transport.findings(scenarioId, cursor),
+        transport.immunity(scenarioId),
+      ]);
       set({
         state,
+        immunity,
         cursor: state.cursor,
         findings: envelope.findings,
         plans: envelope.plans,
@@ -203,8 +205,6 @@ export const useConsole = create<ConsoleState>((set, get) => ({
   async restart() {
     set({ playing: false, selectedFindingId: null });
     await get().seek(0);
-    const { scenarioId } = get();
-    if (transport && scenarioId) set({ immunity: await transport.immunity(scenarioId) });
   },
 
   play() {
