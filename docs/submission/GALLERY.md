@@ -18,11 +18,11 @@
 
 ## 3. Compare and verify
 
-**File:** [06-contained.png](../assets/06-contained.png)
+**File:** [response-verification.png](assets/response-verification.png)
 
 **Caption:** A simulated response is checked against the resulting graph. Both path removal and preservation of declared work are visible.
 
-**Alt text:** Aegis Relay workspace after simulated containment, with the verification results and a newly recorded draft pattern.
+**Alt text:** Response comparison table after simulated containment, showing viable and rejected controls plus the successful path-removal and declared-work verification checks.
 
 ## 4. Change the environment
 

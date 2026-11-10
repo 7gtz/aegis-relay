@@ -13,6 +13,7 @@ A pull-ready set of artwork, product screenshots, copy, and a short demo walkthr
 | [social-card.png](assets/social-card.png) | 1200 × 630 | Social announcement or link preview artwork |
 | [mark.png](assets/mark.png) | 1024 × 1024, transparent canvas | Project avatar or logo overlay |
 | [Investigation workspace](../assets/working-prototype.png) | 1800 × 1350 | Gallery: map, finding, composed path, weighted signals |
+| [Verified response](assets/response-verification.png) | 1310 × 692 | Gallery: candidate comparison and post-control verification |
 | [Swarm Lab](../assets/swarm-lab-result.png) | 1110 × 849 | Gallery: generated population and implemented result |
 
 Devpost.com's [submission guide](https://help.devpost.com/article/126-know-your-submission-steps) recommends a 3:2 gallery thumbnail and accepts JPG, PNG, or GIF up to 5 MB. The thumbnail here is under that limit. Event-specific requirements may add fields or video constraints.
