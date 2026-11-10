@@ -147,6 +147,31 @@ def get_finding(scenario_id: str, finding_id: str) -> dict[str, Any]:
     }
 
 
+@router.get(
+    "/replays/{scenario_id}/evidence",
+    tags=["detection"],
+    summary="Evidence events cited by current findings",
+)
+def get_evidence(
+    scenario_id: str,
+    finding_id: str | None = Query(
+        default=None,
+        description="Return evidence for one open finding instead of all current findings.",
+    ),
+) -> dict[str, Any]:
+    session = _session(scenario_id)
+    try:
+        events = session.evidence(finding_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    return {
+        "scenario_id": scenario_id,
+        "cursor": session.ledger.cursor,
+        "finding_id": finding_id,
+        "events": events,
+    }
+
+
 @router.post(
     "/replays/{scenario_id}/plans/{plan_id}/apply",
     tags=["containment"],

@@ -345,6 +345,68 @@
         }
       }
     },
+    "/api/v1/replays/{scenario_id}/evidence": {
+      "get": {
+        "tags": [
+          "detection"
+        ],
+        "summary": "Evidence events cited by current findings",
+        "operationId": "get_evidence_api_v1_replays__scenario_id__evidence_get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          },
+          {
+            "name": "finding_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Return evidence for one open finding instead of all current findings.",
+              "title": "Finding Id"
+            },
+            "description": "Return evidence for one open finding instead of all current findings."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Evidence Api V1 Replays  Scenario Id  Evidence Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/replays/{scenario_id}/plans/{plan_id}/apply": {
       "post": {
         "tags": [

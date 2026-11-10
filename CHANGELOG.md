@@ -14,6 +14,8 @@ A reviewable demo snapshot with a public recorded workspace and a pull-ready Dev
 
 ### Added
 
+- Read-only evidence endpoint for auditing the replayed ledger events cited by
+  current findings, with optional finding scoping and OpenAPI coverage.
 - Seven transport regression tests, two browser journeys, and two isolated static-site assembly tests: 244 tests in total.
 - Repository checks for local Markdown links and JSON syntax; CI builds the complete static site.
 - Devpost thumbnail, widescreen cover, social card, transparent mark, editable artwork, and a repeatable export command.

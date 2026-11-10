@@ -297,6 +297,7 @@ The API base is `http://127.0.0.1:8000/api/v1`; all routes in the table below ar
 | GET | `/replays/{scenario_id}/state` | Current state and graph |
 | GET | `/replays/{scenario_id}/findings` | Findings and plans |
 | GET | `/replays/{scenario_id}/findings/{finding_id}` | One finding and its plan |
+| GET | `/replays/{scenario_id}/evidence?finding_id=...` | Replayed ledger events cited by current findings |
 | POST | `/replays/{scenario_id}/plans/{plan_id}/apply` | Apply and verify the recommendation |
 | GET | `/replays/{scenario_id}/architecture` | Declaration, invariants, and controls |
 | GET | `/replays/{scenario_id}/immunity` | Recorded patterns |

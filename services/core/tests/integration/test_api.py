@@ -212,6 +212,39 @@ class TestFindingDetail:
         client.post(f"{BASE}/run")
         assert client.get(f"{BASE}/findings/finding-nope").status_code == 404
 
+    def test_evidence_returns_only_replayed_events_cited_by_findings(
+        self, client: TestClient
+    ) -> None:
+        client.post(f"{BASE}/advance", params={"to_sequence": 11})
+        assert client.get(f"{BASE}/evidence").json()["events"] == []
+
+        client.post(f"{BASE}/run")
+        body = client.get(f"{BASE}/evidence").json()
+        assert body["cursor"] == 12
+        assert body["finding_id"] is None
+        assert body["events"]
+        assert all(entry["event"]["sequence"] <= 12 for entry in body["events"])
+        assert all(entry["finding_ids"] == ["finding-ps001"] for entry in body["events"])
+
+    def test_evidence_can_be_scoped_to_one_finding(self, client: TestClient) -> None:
+        client.post(f"{BASE}/run")
+        response = client.get(f"{BASE}/evidence", params={"finding_id": "finding-ps001"})
+        body = response.json()
+        assert response.status_code == 200
+        assert body["finding_id"] == "finding-ps001"
+        assert {entry["event"]["event_id"] for entry in body["events"]} == {
+            "p0-ev-01",
+            "p0-ev-06",
+            "p0-ev-07",
+            "p0-ev-10",
+            "p0-ev-12",
+        }
+
+    def test_evidence_rejects_an_unknown_finding(self, client: TestClient) -> None:
+        client.post(f"{BASE}/run")
+        response = client.get(f"{BASE}/evidence", params={"finding_id": "finding-nope"})
+        assert response.status_code == 404
+
     def test_architecture_returns_what_detection_is_measured_against(
         self, client: TestClient
     ) -> None:

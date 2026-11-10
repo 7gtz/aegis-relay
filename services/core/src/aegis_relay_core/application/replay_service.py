@@ -186,6 +186,41 @@ class ReplayService:
             "plans": [plan.model_dump() for plan in plans],
         }
 
+    def evidence(self, finding_id: str | None = None) -> list[dict[str, Any]]:
+        """Return replayed ledger events cited by the current findings.
+
+        Evidence is deliberately resolved from the append-only ledger rather
+        than reconstructed from graph edges. That preserves the event identity,
+        timestamp, provenance, and redacted context an operator needs to audit
+        why a finding exists.
+        """
+        findings = self.detect()
+        if finding_id is not None and not any(finding.id == finding_id for finding in findings):
+            raise KeyError(f"No open finding {finding_id!r} in the current state.")
+
+        selected = (
+            [finding for finding in findings if finding.id == finding_id]
+            if finding_id is not None
+            else findings
+        )
+        citations: dict[str, list[str]] = {}
+        for finding in selected:
+            for event_id in finding.evidence_event_ids:
+                citations.setdefault(event_id, []).append(finding.id)
+
+        events: list[dict[str, Any]] = []
+        for event in self.ledger.replayed():
+            finding_ids = citations.get(event.event_id)
+            if finding_ids is None:
+                continue
+            events.append(
+                {
+                    "event": event.model_dump(),
+                    "finding_ids": finding_ids,
+                }
+            )
+        return events
+
     # ------------------------------------------------------------------
     # Containment
     # ------------------------------------------------------------------
